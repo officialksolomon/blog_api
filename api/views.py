@@ -36,8 +36,9 @@ class PostView(viewsets.ModelViewSet):
         return super().perform_create(serializer)
 
     @action(detail=True)
-    def total_post_comments(self, request):
-        total_post_comments = Comment.objects.all()
+    def total_post_comments(self, request, pk=None):
+        post = Post.objects.get(pk=pk)
+        total_post_comments = post.comments.count()
         return Response(total_post_comments)
 
 
