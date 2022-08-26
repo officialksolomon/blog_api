@@ -17,10 +17,12 @@ class AuthorSerializers(serializers.ModelSerializer):
 
 
 class CommentSerializers(serializers.ModelSerializer):
-    # author = AuthorSerializers()
+    author = AuthorSerializers()
+
     class Meta:
         model = Comment
         fields = "__all__"
+        read_only_fields = ['author']
 
 
 class PostSerializers(serializers.ModelSerializer):
