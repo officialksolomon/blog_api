@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from api.models import Comment, Post, Tag
-from api.serializers import PostSerializers, SafePostSerializers, CommentSerializers, TagSerializers
+from api.serializers import PostSerializers, SafePostSerializers, CommentSerializers, TagSerializers, TotalPostCommentsSerializer, TotalTagsSerializer
 from rest_framework import permissions
+from rest_framework import serializers
 from rest_framework.decorators import action
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
+
 # Create your views here.
 
 
@@ -39,7 +42,9 @@ class PostView(viewsets.ModelViewSet):
     def total_post_comments(self, request, pk=None):
         post = Post.objects.get(pk=pk)
         total_post_comments = post.comments.count()
-        return Response(total_post_comments)
+        data = {'total_post_comments': total_post_comments}
+        result = TotalPostCommentsSerializer(data).data
+        return Response(result)
 
 
 class CommentView(viewsets.ModelViewSet):
@@ -48,7 +53,7 @@ class CommentView(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
 
 
-class TagView(viewsets.ModelViewSet):
+class TagView(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.order_by('-created_at')
     serializer_class = TagSerializers
     permission_classes = [permissions.AllowAny]
@@ -56,4 +61,6 @@ class TagView(viewsets.ModelViewSet):
     @action(detail=False)
     def total_tags(self, request):
         total_tags = Tag.objects.count()
-        return Response(total_tags)
+        data = {'total_tags': total_tags}
+        result = TotalTagsSerializer(data).data
+        return Response(result)

@@ -49,3 +49,11 @@ class SafePostSerializers(serializers.ModelSerializer):
         extra_kwargs = {
             'author': {'read_only': True},
         }
+
+
+class TotalPostCommentsSerializer(serializers.Serializer):
+    total_post_comments = serializers.IntegerField()
+
+
+class TotalTagsSerializer(serializers.Serializer):
+    total_tags = serializers.IntegerField()
