@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from api.models import Post, Tag, Comment
+from api.models import CommentReply, Post, Tag, Comment
 from django.contrib.auth.models import User
 
 
@@ -10,19 +10,28 @@ class TagSerializers(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AuthorSerializers(serializers.ModelSerializer):
+class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username']
 
 
 class CommentSerializers(serializers.ModelSerializer):
-    author = AuthorSerializers()
+    author = AuthorSerializer()
 
     class Meta:
         model = Comment
-        fields = "__all__"
-        read_only_fields = ['author']
+        fields = ['id', 'content',  'published_at',
+                  'modified_at', 'author', 'post']
+
+
+class CommentRepliesSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer()
+
+    class Meta:
+        model = CommentReply
+        fields = ['id', 'comment', 'content',
+                  'published_at', 'modified_at', 'author']
 
 
 class PostSerializers(serializers.ModelSerializer):
@@ -30,15 +39,12 @@ class PostSerializers(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', 'title', 'content', 'status', 'published_at',
-                  'modified_at', 'author', 'tags', 'comments']
-        extra_kwargs = {
-            'author': {'read_only': True},
-            'tags': {'read_only': True},
-        }
+                  'modified_at', 'comments', 'author', 'tags', ]
+        read_only_fields = ['author', 'comments', 'tags']
 
 
 class SafePostSerializers(serializers.ModelSerializer):
-    author = AuthorSerializers()
+    author = AuthorSerializer()
     tags = TagSerializers(many=True)
     comments = CommentSerializers(many=True)
 
@@ -49,11 +55,3 @@ class SafePostSerializers(serializers.ModelSerializer):
         extra_kwargs = {
             'author': {'read_only': True},
         }
-
-
-class TotalPostCommentsSerializer(serializers.Serializer):
-    total_post_comments = serializers.IntegerField()
-
-
-class TotalTagsSerializer(serializers.Serializer):
-    total_tags = serializers.IntegerField()

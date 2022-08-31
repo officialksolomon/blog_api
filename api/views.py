@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from api.models import Comment, Post, Tag
-from api.serializers import PostSerializers, SafePostSerializers, CommentSerializers, TagSerializers, TotalPostCommentsSerializer, TotalTagsSerializer
+from api.models import Comment, CommentReply, Post, Tag
+from api.serializers import CommentRepliesSerializer, PostSerializers, SafePostSerializers, CommentSerializers, TagSerializers
 from rest_framework import permissions
 from rest_framework import serializers
 from rest_framework.decorators import action
@@ -43,14 +43,21 @@ class PostView(viewsets.ModelViewSet):
         post = Post.objects.get(pk=pk)
         total_post_comments = post.comments.count()
         data = {'total_post_comments': total_post_comments}
-        result = TotalPostCommentsSerializer(data).data
-        return Response(result)
+
+        return Response(data)
 
 
 class CommentView(viewsets.ModelViewSet):
     queryset = Comment.objects.order_by('-published_at')
     serializer_class = CommentSerializers
     permission_classes = [permissions.AllowAny]
+
+    @action(detail=True)
+    def total_replies(self, request, pk=None):
+        comment = Comment.objects.get(pk=pk)
+        total_replies = comment.comment_replies.count()
+        data = {'total_replies': total_replies}
+        return Response(data)
 
 
 class TagView(viewsets.ReadOnlyModelViewSet):
@@ -62,5 +69,11 @@ class TagView(viewsets.ReadOnlyModelViewSet):
     def total_tags(self, request):
         total_tags = Tag.objects.count()
         data = {'total_tags': total_tags}
-        result = TotalTagsSerializer(data).data
-        return Response(result)
+
+        return Response(data)
+
+
+class CommentRepliesView(viewsets.ReadOnlyModelViewSet):
+    queryset = CommentReply.objects.order_by('-published_at')
+    serializer_class = CommentRepliesSerializer
+    permission_classes = [permissions.AllowAny]

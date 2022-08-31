@@ -41,11 +41,15 @@ class Comment(models.Model):
         return self.content[:30]
 
 
-class Comment_Reply(models.Model):
+class CommentReply(models.Model):
     content = models.TextField()
     author = models.ForeignKey(
         User, related_name='comment_replies',  on_delete=models.CASCADE)
+    published_at = models.DateTimeField(auto_now_add=True, blank=True)
+    modified_at = models.DateTimeField(auto_now=True, blank=True)
     # relationships
     comment = models.ForeignKey(
-        Post, related_name='comment_replies', on_delete=models.CASCADE)
-    tags = models.ForeignKey(Tag,  on_delete=models.CASCADE)
+        Comment, related_name='comment_replies', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.content[:30]

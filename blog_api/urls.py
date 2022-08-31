@@ -8,6 +8,7 @@ from api import views
 router = routers.DefaultRouter()
 router.register('posts', views.PostView)
 router.register('comments', views.CommentView)
+router.register('comment_replies', views.CommentRepliesView)
 router.register('tags', views.TagView)
 urlpatterns = [
     path('admin/', admin.site.urls),
