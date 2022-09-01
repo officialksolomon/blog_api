@@ -1,7 +1,7 @@
 
 # Simple Blog Webapp API
 
-## This API is used to create a fully functional Blog Webapp.  
+## This API can be used to create a fully functional Blog Webapp.  
 
 The API is available at `http://127.0.0.1:8000/api/`.   
 
