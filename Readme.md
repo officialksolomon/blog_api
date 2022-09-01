@@ -10,7 +10,7 @@ _Note_: To get this API to work on your local machine do the following:
 - **Install Requiremenrs**
 - **Execute CMD command python manage.py runserver.**  
 
-I assume you have know of ***Python Django***.  
+I assume you have knowlegde of ***Python Django***.  
 
 
 ## Endpoints ##
