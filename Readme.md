@@ -14,3 +14,4 @@ I assume you have knowlegde of ***Python Django***.
 
 
 ## Endpoints ##
+Working in progress... Adding enpoints soon....
