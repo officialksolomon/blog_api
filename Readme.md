@@ -13,5 +13,18 @@ _Note_: To get this API to work on your local machine do the following:
 I assume you have knowlegde of ***Python Django***.  
 
 
-## Endpoints ##
-Work in progress... Adding enpoints soon....
+## **Endpoints** 
+Work in progress... Adding enpoints....
+
+### **List of books**
+
+**GET `/posts`**   
+Returns a list of books.
+
+Optional query parameters:
+- tag: (example tag: web, flutter, food, coding.....)  
+_sample endpoint:_  `/posts/?tag=web`
+### **Get a Single Post**
+
+**GET `/posts/:postId`**   
+Returns detailed information about a post.
