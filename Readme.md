@@ -16,7 +16,7 @@ I assume you have knowlegde of ***Python Django***.
 ## **Endpoints** 
 Work in progress... Adding enpoints....
 
-### **List of books**
+### List of books
 
 **GET `/posts`**   
 Returns a list of books.
@@ -24,7 +24,29 @@ Returns a list of books.
 Optional query parameters:
 - tag: (example tag: web, flutter, food, coding.....)  
 _sample endpoint:_  `/posts/?tag=web`
-### **Get a Single Post**
+### Get a Single Post
 
 **GET `/posts/:postId`**   
 Returns detailed information about a post.
+
+### Submit a Post ###
+
+POST `/post`
+
+Allows you to submit a new post. Requires authentication.
+
+The request body needs to be in JSON format and include the following properties:
+
+ - `bookId` - Integer - Required
+ - `title` - String - Required
+
+Example
+```
+POST /posts/
+Authorization: Bearer <YOUR TOKEN>
+
+{
+  "postId": 1,
+  "title": "John"
+}
+```
