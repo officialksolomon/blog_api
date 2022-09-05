@@ -41,7 +41,7 @@ class PostSerializers(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'title', 'content', 'status', 'published_at',
                   'modified_at', 'comments', 'author', 'tags', ]
-        read_only_fields = ['author', 'comments', 'tags']
+        read_only_fields = ['author', 'comments', 'tags', 'status']
 
 
 class SafePostSerializers(serializers.ModelSerializer):
@@ -53,9 +53,7 @@ class SafePostSerializers(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'title', 'content', 'status', 'published_at',
                   'modified_at', 'author', 'tags', 'comments']
-        extra_kwargs = {
-            'author': {'read_only': True},
-        }
+        read_only_fields = ['author', 'comments', 'tags', 'status']
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

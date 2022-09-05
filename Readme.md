@@ -73,8 +73,9 @@ Allows you to submit a new post. Requires authentication.
 
 The request body needs to be in JSON format and include the following properties:
 
- - `bookId` - Integer - Required
  - `title` - String - Required
+ - `content` - String - Required
+ - `tags` - Optional: [] of JSON objects or single JSON object.
 
 Example
 ```
@@ -82,7 +83,19 @@ POST /posts/
 Authorization: Bearer <YOUR TOKEN>
 
 {
-  "postId": 1,
-  "title": "John"
-}
+        "title": "Is web3 really taking over?",
+        "content": "Web3 in 2022 adn beyond.",
+        "tags": [
+            {
+               
+                "name": "crypto"
+               
+            },
+            {
+                
+                "name": "web3"
+               
+            }
+        ]
+    }
 ```
