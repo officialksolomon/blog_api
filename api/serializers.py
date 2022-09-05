@@ -1,4 +1,5 @@
 
+from pyexpat import model
 from rest_framework import serializers
 from api.models import CommentReply, Post, Tag, Comment
 from django.contrib.auth.models import User
@@ -55,3 +56,22 @@ class SafePostSerializers(serializers.ModelSerializer):
         extra_kwargs = {
             'author': {'read_only': True},
         }
+
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            validated_data['username'], validated_data['email'], validated_data['password'])
+        return user
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+        write_only_fields = ['password']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']

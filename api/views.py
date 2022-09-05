@@ -1,14 +1,18 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, views
 from api.models import Comment, CommentReply, Post, Tag
-from api.serializers import CommentRepliesSerializer, PostSerializers, SafePostSerializers, CommentSerializers, TagSerializers
-from rest_framework import permissions
+from api.serializers import CommentRepliesSerializer, PostSerializers, SafePostSerializers, CommentSerializers, TagSerializers, UserRegistrationSerializer, UserSerializer
+from rest_framework import permissions, generics
 from rest_framework import serializers
 from rest_framework.decorators import action
-from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 # Create your views here.
+
+
+for user in User.objects.all():
+    Token.objects.get_or_create(user=user)
 
 
 class PostView(viewsets.ModelViewSet):
@@ -77,3 +81,16 @@ class CommentRepliesView(viewsets.ReadOnlyModelViewSet):
     queryset = CommentReply.objects.order_by('-published_at')
     serializer_class = CommentRepliesSerializer
     permission_classes = [permissions.AllowAny]
+
+
+class UserRegistrationView(generics.GenericAPIView):
+    serializer_class = UserRegistrationSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.save()
+            return Response({
+                'user': UserSerializer(user, context=self.get_serializer_context()).data,
+                'token': Token.objects.get(user=user).key
+            })

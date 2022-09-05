@@ -17,7 +17,9 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
-#auth token url
+# auth token url
 urlpatterns += [
-path('api-token-auth/', rest_views.obtain_auth_token)
+    path('api/auth_token/', rest_views.obtain_auth_token),
+    path('api/register/', views.UserRegistrationView.as_view())
+
 ]
