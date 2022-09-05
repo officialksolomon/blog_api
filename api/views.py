@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 # Create your views here.
 
-
+# creates Token for existing users
 for user in User.objects.all():
     Token.objects.get_or_create(user=user)
 
@@ -18,8 +18,7 @@ for user in User.objects.all():
 class PostView(viewsets.ModelViewSet):
     queryset = Post.objects.order_by('-published_at')
     serializer_class = PostSerializers
-    permission_classes = [permissions.AllowAny]
-
+    
     def get_serializer_class(self):
         if self. request.method in permissions.SAFE_METHODS:
             return SafePostSerializers
@@ -54,7 +53,6 @@ class PostView(viewsets.ModelViewSet):
 class CommentView(viewsets.ModelViewSet):
     queryset = Comment.objects.order_by('-published_at')
     serializer_class = CommentSerializers
-    permission_classes = [permissions.AllowAny]
 
     @action(detail=True)
     def total_replies(self, request, pk=None):
@@ -67,7 +65,6 @@ class CommentView(viewsets.ModelViewSet):
 class TagView(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.order_by('-created_at')
     serializer_class = TagSerializers
-    permission_classes = [permissions.AllowAny]
 
     @action(detail=False)
     def total_tags(self, request):

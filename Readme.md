@@ -12,14 +12,50 @@ _Note_: To get this API to work on your local machine do the following:
 
 I assume you have knowlegde of ***Python Django***.  
 
-
+_Note_: This API requires authentication for its core features, register with the user registration endpoint.
 ## **Endpoints** 
 Work in progress... Adding enpoints....
+## ***Authentication***
+### User Registration
 
+**POST `/register`**   
+Register, and returns a new user with authentication token.  
+The request body needs to be in JSON format and include the following properties:
+
+ - `username` - String - Required
+ - `email` - String - Required
+ - `password` - String - Required
+
+Example
+```
+POST /register
+{
+  "username": "solo",
+  "email": "solo@gmail.com"
+  "password": "YOUR_PASSWORD"
+}
+```
+### Get Authorization Token
+
+**POST `/auth_token`**   
+Returns user auth token.   
+The request body needs to be in JSON format and include the following properties:
+
+ - `username` - String - Required
+ - `password` - String - Required
+
+Example
+```
+POST /auth_token
+{
+  "username": "solo",
+  "password": "YOUR_PASSWORD"
+}
+```
 ### List of books
 
 **GET `/posts`**   
-Returns a list of books.
+Returns a list of posts.
 
 Optional query parameters:
 - tag: (example tag: web, flutter, food, coding.....)  
